@@ -1,6 +1,6 @@
 from functools import reduce
 
-from utils import get_input
+from utils import get_input, print_result
 
 NUM_WORDS_DICT = {
     "one": "1",
@@ -16,7 +16,7 @@ NUM_WORDS_DICT = {
 
 
 def calc_digit_calibration_value_from_line(line: str) -> int:
-    first, last = '', ''
+    first, last = "", ""
     i = 0
     while not first or not last:
         if not first and line[i].isdigit():
@@ -28,10 +28,10 @@ def calc_digit_calibration_value_from_line(line: str) -> int:
 
 
 def calc_word_calibration_value_from_line(line: str) -> int:
-    first_digit, last_digit, front_scan, back_scan = '', '', '', ''
+    first_digit, last_digit, front_scan, back_scan = "", "", "", ""
 
     def try_for_digit_in_scan(scan: str):
-        digit = ''
+        digit = ""
         for num_word, num in NUM_WORDS_DICT.items():
             if num_word in scan:
                 digit = num
@@ -53,29 +53,30 @@ def calc_word_calibration_value_from_line(line: str) -> int:
                 last_digit = curr_back
             else:
                 back_scan += curr_back
-                last_digit = try_for_digit_in_scan(''.join(reversed(back_scan)))
+                last_digit = try_for_digit_in_scan("".join(reversed(back_scan)))
 
         i += 1
     return int(first_digit + last_digit)
 
 
+@print_result(part_num=1)
 def part1():
-    print(
-        reduce(
-            lambda acc, line: acc + calc_digit_calibration_value_from_line(line)
-            , get_input('day1part1')
-            , 0)
+    return reduce(
+        lambda acc, line: acc + calc_digit_calibration_value_from_line(line),
+        get_input(lambda line: line.strip(), day_num=1),
+        0,
     )
 
 
+@print_result(part_num=2)
 def part2():
-    print(
-        reduce(
-            lambda acc, line: acc + calc_word_calibration_value_from_line(line)
-            , get_input('day1part2')
-            , 0)
+    return reduce(
+        lambda acc, line: acc + calc_word_calibration_value_from_line(line),
+        get_input(lambda line: line.strip(), day_num=1),
+        0,
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    part1()
     part2()
