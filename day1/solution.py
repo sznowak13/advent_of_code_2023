@@ -15,6 +15,10 @@ NUM_WORDS_DICT = {
 }
 
 
+def parse_input(raw_input):
+    return [line.strip() for line in raw_input]
+
+
 def calc_digit_calibration_value_from_line(line: str) -> int:
     first, last = "", ""
     i = 0
@@ -59,24 +63,24 @@ def calc_word_calibration_value_from_line(line: str) -> int:
     return int(first_digit + last_digit)
 
 
-@print_result(part_num=1)
+@print_result(part_num=1, day_num=1)
 def part1():
     return reduce(
         lambda acc, line: acc + calc_digit_calibration_value_from_line(line),
-        get_input(lambda line: line.strip(), day_num=1),
+        get_input(input_parser=parse_input, day_num=1),
         0,
     )
 
 
-@print_result(part_num=2)
+@print_result(part_num=2, day_num=1)
 def part2():
     return reduce(
         lambda acc, line: acc + calc_word_calibration_value_from_line(line),
-        get_input(lambda line: line.strip(), day_num=1),
+        get_input(input_parser=parse_input, day_num=1),
         0,
     )
 
 
-if __name__ == "__main__":
+def main():
     part1()
     part2()
