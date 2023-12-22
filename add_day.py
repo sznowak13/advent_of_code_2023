@@ -5,7 +5,7 @@ import typer
 
 solution_file_template = """import re
 from dataclasses import dataclass
-from utils import print_result, get_input
+from utils import print_and_time_result, get_input
 
 
 def parse_input(raw_input: str):
