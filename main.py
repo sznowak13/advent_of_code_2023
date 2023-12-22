@@ -1,17 +1,19 @@
-from day1 import day1_solution
-from day2 import day2_solution
-from day3 import day3_solution
-from day4 import day4_solution
-from day5 import day5_solution
+import importlib
+import os
+import re
+
+days_modules = []
+
+day_pattern = re.compile(r"day\d")
+for _dir in os.listdir("."):
+    if os.path.isdir(_dir) and day_pattern.match(_dir):
+        days_modules.append(importlib.import_module(_dir))
 
 
 def main():
-    day1_solution()
-    day2_solution()
-    day3_solution()
-    day4_solution()
-    day5_solution()
+    for day_module in days_modules:
+        day_module.solution.main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

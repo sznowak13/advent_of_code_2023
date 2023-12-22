@@ -1,14 +1,14 @@
 import re
 from operator import mul
 
-from utils import get_input, print_result
+from utils import get_input, print_and_time_result
 
 
 def parse_input(raw_inpt: str):
     return [line.strip() for line in raw_inpt]
 
 
-NON_SPECIAL_SYMBOLS = [*list(map(str, range(10))), '.']
+NON_SPECIAL_SYMBOLS = [*list(map(str, range(10))), "."]
 
 
 class GridMember:
@@ -37,7 +37,13 @@ class GridNumber(GridMember):
         return len(self.repr_str)
 
     def is_part_number(self):
-        return bool([neighbour for neighbour in self.neighbours if isinstance(neighbour, GridSymbol)])
+        return bool(
+            [
+                neighbour
+                for neighbour in self.neighbours
+                if isinstance(neighbour, GridSymbol)
+            ]
+        )
 
 
 class GridSymbol(GridMember):
@@ -45,10 +51,25 @@ class GridSymbol(GridMember):
         super().__init__(x, y, repr_str)
 
     def is_gear(self):
-        return len([neighbour for neighbour in self.neighbours if isinstance(neighbour, GridNumber)]) == 2
+        return (
+            len(
+                [
+                    neighbour
+                    for neighbour in self.neighbours
+                    if isinstance(neighbour, GridNumber)
+                ]
+            )
+            == 2
+        )
 
     def get_gear_ratio(self):
-        return mul(*[neighbour.value for neighbour in self.neighbours if isinstance(neighbour, GridNumber)])
+        return mul(
+            *[
+                neighbour.value
+                for neighbour in self.neighbours
+                if isinstance(neighbour, GridNumber)
+            ]
+        )
 
 
 class Grid(list):
@@ -74,7 +95,9 @@ class Grid(list):
         return len(self)
 
     def model_grid(self):
-        self.grid_model = [[None for _ in range(self.width)] for _ in range(self.height)]
+        self.grid_model = [
+            [None for _ in range(self.width)] for _ in range(self.height)
+        ]
         number_regex = re.compile(r"(\d+)")
         symbol_regex = re.compile(r"([^0-9.])")
 
@@ -85,7 +108,9 @@ class Grid(list):
                 for x in range(digit_match.start(), digit_match.end()):
                     self.grid_model[y][x] = number
             for symbol_match in symbol_regex.finditer(row):
-                symbol = GridSymbol(x=symbol_match.start(), y=y, repr_str=symbol_match[0])
+                symbol = GridSymbol(
+                    x=symbol_match.start(), y=y, repr_str=symbol_match[0]
+                )
                 self.members.append(symbol)
                 self.grid_model[y][symbol_match.start()] = symbol
 
@@ -115,18 +140,22 @@ class Grid(list):
                     neighbour.add_neighbour(member)
 
 
-@print_result(part_num=1, day_num=3)
+@print_and_time_result(part_num=1, day_num=3)
 def part1():
-    grid: Grid = Grid(get_input(input_parser=parse_input, day_num=3, test=False, part_num=1))
+    grid: Grid = Grid(
+        get_input(input_parser=parse_input, day_num=3, test=False, part_num=1)
+    )
     grid.model_grid()
 
     part_numbers = grid.get_part_numbers()
     return sum([part_num.value for part_num in part_numbers])
 
 
-@print_result(part_num=2, day_num=3)
+@print_and_time_result(part_num=2, day_num=3)
 def part2():
-    grid: Grid = Grid(get_input(input_parser=parse_input, day_num=3, test=False, part_num=1))
+    grid: Grid = Grid(
+        get_input(input_parser=parse_input, day_num=3, test=False, part_num=1)
+    )
     grid.model_grid()
     gears = grid.get_gears()
     return sum([gear.get_gear_ratio() for gear in gears])

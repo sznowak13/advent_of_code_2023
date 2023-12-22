@@ -1,12 +1,19 @@
 from functools import wraps
 from pathlib import Path
 from typing import Callable
+import time
 
 import sys
 import os
 
 
-def get_input(day_num: int, input_parser: Callable = None, test: bool = False, part_num: int = 1, to_list: bool = True):
+def get_input(
+    day_num: int,
+    input_parser: Callable = None,
+    test: bool = False,
+    part_num: int = 1,
+    to_list: bool = True,
+):
     input_name = "input" if not test else f"part{part_num}test"
     _path = Path(f"day{day_num}/{input_name}.txt")
 
@@ -17,12 +24,16 @@ def get_input(day_num: int, input_parser: Callable = None, test: bool = False, p
     return inpt
 
 
-def print_result(part_num: int, day_num: int):
+def print_and_time_result(part_num: int, day_num: int):
     def deco(func: Callable):
         @wraps(func)
         def wrapper(*args, **kwargs):
+            start = time.perf_counter_ns()
             result = func(*args, **kwargs)
-            print(f"Result calculated for part {part_num} of day {day_num}: {result}")
+            time_took = time.perf_counter_ns() - start
+            print(
+                f"Result calculated for part {part_num} of day {day_num}: {result}. Took {time_took // 1_000_000} ms"
+            )
 
         return wrapper
 

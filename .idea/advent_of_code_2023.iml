@@ -5,4 +5,7 @@
     <orderEntry type="jdk" jdkName="Pipenv (advent_of_code_2023)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="PackageRequirementsSettings">
+    <option name="requirementsPath" value="C:\Users\snowak\PycharmProjects\advent_of_code_2023\Pipfile" />
+  </component>
 </module>

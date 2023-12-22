@@ -2,7 +2,7 @@ import re
 from functools import reduce
 from operator import mul
 
-from utils import get_input, print_result
+from utils import get_input, print_and_time_result
 from collections import defaultdict
 
 CUBES_LIMIT = {
@@ -11,9 +11,9 @@ CUBES_LIMIT = {
     "blue": 14,
 }
 
-RED = 'red'
-BLUE = 'blue'
-GREEN = 'green'
+RED = "red"
+BLUE = "blue"
+GREEN = "green"
 COLORS = [RED, BLUE, GREEN]
 
 
@@ -72,7 +72,7 @@ def parse_games_part2(raw_inpt: str):
     return games
 
 
-@print_result(part_num=1, day_num=2)
+@print_and_time_result(part_num=1, day_num=2)
 def part1():
     games: dict = get_input(input_parser=parse_games_part1, day_num=2, part_num=1)
     games_possible = []
@@ -91,7 +91,7 @@ def part1():
     return sum(games_possible)
 
 
-@print_result(part_num=2, day_num=2)
+@print_and_time_result(part_num=2, day_num=2)
 def part2():
     games: dict = get_input(input_parser=parse_games_part2, day_num=2, part_num=1)
     return sum([reduce(mul, min_cubes.values()) for min_cubes in games])

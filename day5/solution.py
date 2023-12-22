@@ -1,16 +1,16 @@
 import re
 from dataclasses import dataclass
 
-from utils import print_result, get_input
+from utils import print_and_time_result, get_input
 
 MAP_NAMES = (
-    'seed-to-soil',
-    'soil-to-fertilizer',
-    'fertilizer-to-water',
-    'water-to-light',
-    'light-to-temperature',
-    'temperature-to-humidity',
-    'humidity-to-location',
+    "seed-to-soil",
+    "soil-to-fertilizer",
+    "fertilizer-to-water",
+    "water-to-light",
+    "light-to-temperature",
+    "temperature-to-humidity",
+    "humidity-to-location",
 )
 
 
@@ -27,6 +27,12 @@ class Range:
     def __contains__(self, item: int):
         return self.source_start <= item <= self.source_end
 
+    def __and__(self, other):
+        return Range(1, 1, 1)
+
+    def __sub__(self, other):
+        return Range(0, 0, 0)
+
 
 @dataclass
 class RangeMap:
@@ -36,10 +42,20 @@ class RangeMap:
     def map_to_destination_number(self, source_number: int):
         try:
             _range: Range = self._get_range_for(source_number)
-            destination_number = (source_number - _range.source_start) + _range.destination_start
+            destination_number = (
+                source_number - _range.source_start
+            ) + _range.destination_start
             return destination_number
         except ValueError:
             return source_number
+
+    def map_to_destination_ranges(self, input_ranges: list[Range]):
+        output_ranges = []
+        remaining_ranges = []
+        for input_range in input_ranges:
+            for available_range in self.ranges:
+                overlap_range = input_range & available_range
+                remaining_lower_range = input_range - available_range
 
     def _get_range_for(self, number: int):
         for _range in self.ranges:
@@ -51,20 +67,25 @@ class RangeMap:
 
 def parse_input(raw_input: str) -> tuple[list[int], dict[str, RangeMap]]:
     seed_pattern = re.compile(r"seeds: ([\d ]+)")
-    map_patterns: dict[str, re.Pattern] = {name: re.compile(fr"{name} map:(\n[\d\s]+)+") for name in MAP_NAMES}
+    map_patterns: dict[str, re.Pattern] = {
+        name: re.compile(rf"{name} map:(\n[\d\s]+)+") for name in MAP_NAMES
+    }
     maps = {}
-    seed_numbers = list(map(int, seed_pattern.findall(raw_input).pop().split(' ')))
+    seed_numbers = list(map(int, seed_pattern.findall(raw_input).pop().split(" ")))
     for name, pattern in map_patterns.items():
-        ranges = [list(map(int, range_str.split(' '))) for range_str in
-                  # f*u if you think its ugly i dun care
-                  pattern.findall(raw_input).pop().strip().split('\n')]
+        ranges = [
+            list(map(int, range_str.split(" ")))
+            for range_str in
+            # f*u if you think its ugly i dun care
+            pattern.findall(raw_input).pop().strip().split("\n")
+        ]
         ranges = [Range(*rng) for rng in ranges]
         maps[name] = RangeMap(name, ranges)
 
     return seed_numbers, maps
 
 
-@print_result(part_num=1, day_num=5)
+@print_and_time_result(part_num=1, day_num=5)
 def part1():
     seed_numbers: list[int]
     maps: dict[str, RangeMap]
@@ -80,7 +101,7 @@ def part1():
     return min(mapped_numbers)
 
 
-@print_result(part_num=2, day_num=5)
+@print_and_time_result(part_num=2, day_num=5)
 def part2():
     pass
 

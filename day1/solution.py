@@ -1,6 +1,6 @@
 from functools import reduce
 
-from utils import get_input, print_result
+from utils import get_input, print_and_time_result
 
 NUM_WORDS_DICT = {
     "one": "1",
@@ -63,7 +63,7 @@ def calc_word_calibration_value_from_line(line: str) -> int:
     return int(first_digit + last_digit)
 
 
-@print_result(part_num=1, day_num=1)
+@print_and_time_result(part_num=1, day_num=1)
 def part1():
     return reduce(
         lambda acc, line: acc + calc_digit_calibration_value_from_line(line),
@@ -72,7 +72,7 @@ def part1():
     )
 
 
-@print_result(part_num=2, day_num=1)
+@print_and_time_result(part_num=2, day_num=1)
 def part2():
     return reduce(
         lambda acc, line: acc + calc_word_calibration_value_from_line(line),
