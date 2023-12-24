@@ -91,23 +91,7 @@ def parse_input2(raw_input: str):
 
 @print_and_time_result(part_num=1, day_num=7)
 def part1():
-    Hand.set_card_value_map(
-        {
-            "2": 1,
-            "3": 2,
-            "4": 3,
-            "5": 4,
-            "6": 5,
-            "7": 6,
-            "8": 7,
-            "9": 8,
-            "T": 9,
-            "J": 10,
-            "Q": 11,
-            "K": 12,
-            "A": 13,
-        }
-    )
+    Hand.set_card_value_map({symbol: num for num, symbol in enumerate("23456789TJQKA")})
     hands = get_input(7, parse_input1, test=False)
     return reduce(
         lambda acc, tup: acc + (tup[1].bid * tup[0]),
@@ -118,23 +102,7 @@ def part1():
 
 @print_and_time_result(part_num=2, day_num=7)
 def part2():
-    Hand.set_card_value_map(
-        {
-            "2": 1,
-            "3": 2,
-            "4": 3,
-            "5": 4,
-            "6": 5,
-            "7": 6,
-            "8": 7,
-            "9": 8,
-            "T": 9,
-            "J": 0,
-            "Q": 11,
-            "K": 12,
-            "A": 13,
-        }
-    )
+    Hand.set_card_value_map({symbol: num for num, symbol in enumerate("J23456789TQKA")})
     hands = get_input(7, parse_input2, test=False)
     return reduce(
         lambda acc, tup: acc + (tup[1].bid * tup[0]),
