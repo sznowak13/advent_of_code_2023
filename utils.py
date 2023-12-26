@@ -29,11 +29,21 @@ def print_and_time_result(part_num: int, day_num: int):
         @wraps(func)
         def wrapper(*args, **kwargs):
             start = time.perf_counter_ns()
-            result = func(*args, **kwargs)
-            time_took = time.perf_counter_ns() - start
-            print(
-                f"Result calculated for part {part_num} of day {day_num}: {result}. Took {time_took // 1_000_000} ms"
-            )
+            try:
+                result = func(*args, **kwargs)
+                print(
+                    f"Result calculated for part {part_num} of day {day_num}: {result}.",
+                    end=" ",
+                )
+            except BaseException as e:
+                print(
+                    f"Failed to calculate result for part {part_num} of day {day_num}.",
+                    end=" ",
+                )
+                raise e
+            finally:
+                time_took = time.perf_counter_ns() - start
+                print(f"Took {time_took // 1_000_000} ms")
 
         return wrapper
 
