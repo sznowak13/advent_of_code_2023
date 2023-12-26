@@ -8,10 +8,9 @@ def parse_input(raw_input: str):
 def predict_next_value(history: list):
     if not any(history):
         return 0
-    new_sequence = [
-        next_val - curr_val for curr_val, next_val in zip(history, history[1:])
-    ]
-    return history[-1] + predict_next_value(new_sequence)
+    return history[-1] + predict_next_value(
+        [next_val - curr_val for curr_val, next_val in zip(history, history[1:])]
+    )
 
 
 @print_and_time_result(part_num=1, day_num=9)
