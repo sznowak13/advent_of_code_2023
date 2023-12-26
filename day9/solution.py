@@ -8,9 +8,9 @@ def parse_input(raw_input: str):
 def predict_next_value(history: list):
     if not any(history):
         return 0
-    new_sequence = []
-    for curr_val, next_val in zip(history, history[1:]):
-        new_sequence.append(next_val - curr_val)
+    new_sequence = [
+        next_val - curr_val for curr_val, next_val in zip(history, history[1:])
+    ]
     return history[-1] + predict_next_value(new_sequence)
 
 
