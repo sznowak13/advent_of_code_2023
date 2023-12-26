@@ -1,0 +1,1 @@
+from day9.solution import main as day9_solution
